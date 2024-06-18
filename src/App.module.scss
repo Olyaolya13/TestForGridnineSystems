@@ -1,7 +1,13 @@
 .app {
-  max-width: 1440px;
-  margin: 0;
+  max-width: 1920px;
+  margin: 20px 70px 0 24px;
   padding: 0;
   box-sizing: border-box;
   height: 100%;
+  display: flex;
+  display: grid;
+  grid-template-rows: 44px auto;
+  grid-template-areas:
+    'sidebar header '
+    'sidebar main ';
 }
