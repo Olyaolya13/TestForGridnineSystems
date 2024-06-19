@@ -4,10 +4,7 @@
   padding: 0;
   box-sizing: border-box;
   height: 100%;
-  display: flex;
   display: grid;
   grid-template-rows: 44px auto;
-  grid-template-areas:
-    'sidebar header '
-    'sidebar main ';
+  grid-template-areas: 'filter main ';
 }
