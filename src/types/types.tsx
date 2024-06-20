@@ -25,6 +25,18 @@ export type Segment = {
   travelDuration: number;
 };
 
+export type ServicesStatuses = {
+  baggage: {
+    caption: string;
+  };
+  exchange: {
+    caption: string;
+  };
+  refund: {
+    caption: string;
+  };
+};
+
 export type Leg = {
   duration: number;
   segments: Segment[];
@@ -33,9 +45,18 @@ export type Leg = {
 export interface Flight {
   carrier: Carrier;
   price: Price;
+  servicesStatuses: ServicesStatuses;
   legs: Leg[];
 }
 
 export interface MainProps {
   flight: Flight;
+}
+
+export interface SubmitBtnProps {
+  title?: string;
+  width?: string;
+  disabled?: boolean;
+  margin?: string;
+  onClick?: () => void;
 }

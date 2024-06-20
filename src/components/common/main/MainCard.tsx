@@ -1,58 +1,79 @@
-import { Box, Typography } from '@mui/material';
+import { Box } from '@mui/material';
+import { useEffect, useState } from 'react';
 import data from '../../../../mocks/flights.json';
-import MainTitle from './MainTitle';
+import MainTitle from '../title/Title';
 import { Flight } from '../../../types/types';
-import MainDateTime from './MainDateTime';
+import MainCardContent from './MainCardContent';
+import SubmitBtn from '../ui/btns/SubmitBtn';
 
-export default function Main() {
+const styles = {
+  container: { width: '60vw', gridArea: 'main' },
+  paginationContainer: { display: 'flex', justifyContent: 'center', marginTop: '20px' },
+  submitBtnContainer: {
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'center'
+  }
+};
+
+export default function MainCard() {
   const flightsData = data.result.flights;
+  const [currentPage, setCurrentPage] = useState(1);
+  const visibleItems = 5;
+
+  const handlePrevPage = () => {
+    if (currentPage > 1) {
+      setCurrentPage(currentPage - 1);
+    }
+  };
+
+  const handleNextPage = () => {
+    if (currentPage < Math.ceil(flightsData.length / visibleItems)) {
+      setCurrentPage(currentPage + 1);
+    }
+  };
+
+  const handleDisableBtnPagination = () => {
+    return currentPage === Math.ceil(flightsData.length / visibleItems);
+  };
+
+  const currentData = flightsData.slice(
+    (currentPage - 1) * visibleItems,
+    currentPage * visibleItems
+  );
+
+  useEffect(() => {
+    window.scrollTo({
+      top: 0,
+      left: 0,
+      behavior: 'smooth'
+    });
+  }, [currentPage]);
 
   return (
-    <Box sx={{ width: '60vw', gridArea: 'main' }}>
-      {flightsData.map((flightData: { flight: Flight }, index: number) => (
-        <Box key={index}>
+    <Box sx={styles.container}>
+      {currentData.map((flightData: { flight: Flight }, index: number) => (
+        <Box
+          key={index}
+          sx={{
+            marginBottom: '20px'
+          }}
+        >
           <MainTitle flight={flightData.flight} />
-          <MainDateTime flight={flightData.flight} />
-          {/* {flightData.flight.legs.map((leg, index) => (
-            <Box key={index} sx={{ mt: 1 }}>
-              <Typography variant="h2" sx={{ fontSize: '14px' }}>
-                Общий маршрут: {leg.duration} минут
-              </Typography>
-              {leg.segments.length > 1 ? (
-                <Typography variant="h3" sx={{ fontSize: '16px', color: '#b39b00' }}>
-                  {leg.segments.length === 1
-                    ? 'Прямой рейс'
-                    : leg.segments.length === 2
-                    ? '1 пересадка'
-                    : leg.segments.length === 3 || leg.segments.length === 4
-                    ? `${leg.segments.length - 1} пересадки`
-                    : `${leg.segments.length - 1} пересадок`}
-                </Typography>
-              ) : (
-                <Typography variant="h3" sx={{ fontSize: '16px', color: '#00c298' }}>
-                  Прямой рейс
-                </Typography>
-              )}
-              <Typography
-                variant="h3"
-                sx={{ fontSize: '16px' }}
-              >{`Рейс выполняет: ${flightData.flight.carrier.caption}`}</Typography>
-              <Typography
-                variant="h3"
-                sx={{ fontSize: '16px' }}
-              >{`Баггаж: ${flight.flight.servicesStatuses.baggage.caption}`}</Typography>
-              <Typography
-                variant="h3"
-                sx={{ fontSize: '16px' }}
-              >{`Обмен билета: ${flight.flight.servicesStatuses.exchange.caption}`}</Typography>
-              <Typography
-                variant="h3"
-                sx={{ fontSize: '16px' }}
-              >{`Возврат денежных средств: ${flight.flight.servicesStatuses.refund.caption}`}</Typography>
-            </Box>
-          ))} */}
+          <MainCardContent flight={flightData.flight} />
+          <Box sx={styles.submitBtnContainer}>
+            <SubmitBtn title="Выбрать" width="50vw" />
+          </Box>
         </Box>
       ))}
+      <Box sx={styles.paginationContainer}>
+        <SubmitBtn title="Назад" onClick={handlePrevPage} disabled={currentPage === 1} />
+        <SubmitBtn
+          title="Вперед"
+          onClick={handleNextPage}
+          disabled={handleDisableBtnPagination()}
+        />
+      </Box>
     </Box>
   );
 }
