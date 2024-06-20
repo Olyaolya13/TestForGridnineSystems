@@ -43,6 +43,7 @@ export type Leg = {
 };
 
 export interface Flight {
+  id: number;
   carrier: Carrier;
   price: Price;
   servicesStatuses: ServicesStatuses;
@@ -59,4 +60,10 @@ export interface SubmitBtnProps {
   disabled?: boolean;
   margin?: string;
   onClick?: () => void;
+}
+
+export interface titleSecondaryProps {
+  color?: string;
+  title?: string;
+  margin?: string;
 }

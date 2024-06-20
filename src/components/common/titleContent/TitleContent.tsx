@@ -1,7 +1,7 @@
 import { Box, Typography } from '@mui/material';
 import { MainProps } from '../../../types/types';
 
-export default function MainTitle({ flight }: MainProps) {
+export default function Title({ flight }: MainProps) {
   const ruble = flight.price.total.currency === 'руб.' ? '₽' : flight.price.total.currency;
 
   return (

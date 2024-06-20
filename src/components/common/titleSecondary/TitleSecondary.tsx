@@ -1,9 +1,5 @@
 import { Typography } from '@mui/material';
-
-interface titleSecondaryProps {
-  title?: string;
-  margin?: string;
-}
+import { titleSecondaryProps } from '../../../types/types';
 
 const styles = {
   title: {
@@ -14,9 +10,12 @@ const styles = {
   }
 };
 
-export default function TitleSecondary({ title, margin }: titleSecondaryProps) {
+export default function TitleSecondary({ title, margin, color }: titleSecondaryProps) {
   return (
-    <Typography component="h3" sx={{ ...styles.title, margin: margin ? margin : '0' }}>
+    <Typography
+      component="h3"
+      sx={{ ...styles.title, margin: margin ? margin : '0', color: color || styles.title.color }}
+    >
       {title}
     </Typography>
   );

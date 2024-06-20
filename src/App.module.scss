@@ -1,10 +1,7 @@
 .app {
   max-width: 1920px;
-  margin: 20px 70px 0 24px;
+  margin: 0 auto;
   padding: 0;
   box-sizing: border-box;
   height: 100%;
-  display: grid;
-  grid-template-rows: 44px auto;
-  grid-template-areas: 'filter main ';
 }

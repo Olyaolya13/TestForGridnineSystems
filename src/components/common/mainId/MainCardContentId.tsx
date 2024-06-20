@@ -8,6 +8,12 @@ const getTimeFromMins = (mins: number) => {
   return `${hours}ч. ${minutes}м.`;
 };
 
+const getDurationInMinutes = (startDate: string, endDate: string): number => {
+  const start = new Date(startDate);
+  const end = new Date(endDate);
+  return Math.floor((end.getTime() - start.getTime()) / 60000);
+};
+
 export default function MainDateTime({ flight }: MainProps) {
   return (
     <Box>
@@ -20,7 +26,7 @@ export default function MainDateTime({ flight }: MainProps) {
                   {segment.departureAirport.caption}&nbsp;
                 </Typography>
                 <Typography variant="h2" sx={{ fontSize: '14px', color: '#00a7cc' }}>
-                  ({segment.departureAirport.uid}) - &nbsp;
+                  ({segment.departureAirport.uid}) -&nbsp;
                 </Typography>
                 <Typography variant="h2" sx={{ fontSize: '14px' }}>
                   {segment.arrivalAirport.caption}&nbsp;
@@ -35,35 +41,30 @@ export default function MainDateTime({ flight }: MainProps) {
                   arrivalDate={segment.arrivalDate}
                 />
               </Box>
+              <Box sx={{ display: 'flex', justifyContent: 'space-around', margin: '10px 0 20px' }}>
+                <Typography variant="h3" sx={{ color: 'grey' }}>
+                  Время в пути: {getTimeFromMins(segment.travelDuration)}
+                </Typography>
+
+                {segmentIndex < leg.segments.length - 1 && (
+                  <Typography variant="h3" sx={{ color: 'grey' }}>
+                    Пересадка:
+                    {getTimeFromMins(
+                      getDurationInMinutes(
+                        segment.arrivalDate,
+                        leg.segments[segmentIndex + 1].departureDate
+                      )
+                    )}
+                  </Typography>
+                )}
+              </Box>
             </Box>
           ))}
           <Typography
             variant="h2"
-            sx={{
-              fontSize: '14px',
-              paddingTop: '10px',
-              marginBottom: '10px',
-              color: 'grey'
-            }}
+            sx={{ fontSize: '14px', paddingTop: '10px', textAlign: 'center', marginBottom: '10px' }}
           >
             Общее время: {getTimeFromMins(leg.duration)}
-          </Typography>
-          <Box>
-            {leg.segments.length > 1 ? (
-              <Typography variant="h3" sx={{ fontSize: '16px', color: '#b39b00' }}>
-                {leg.segments.length === 1
-                  ? 'Прямой рейс'
-                  : `${leg.segments.length - 1} пересад${leg.segments.length === 2 ? 'ка' : 'ки'}`}
-              </Typography>
-            ) : (
-              <Typography variant="h3" sx={{ fontSize: '16px', color: '#00c298' }}>
-                Прямой рейс
-              </Typography>
-            )}
-          </Box>
-          <Typography variant="h3" sx={{ fontSize: '16px', color: 'grey' }}>
-            Рейс выполняет:{' '}
-            <span style={{ fontFamily: 'Benzin', color: '#111' }}>{flight.carrier.caption}</span>
           </Typography>
         </Box>
       ))}

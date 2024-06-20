@@ -2,8 +2,8 @@ import { FormControlLabel, Radio, ThemeProvider, createTheme } from '@mui/materi
 
 interface RadioProps {
   onChange?: () => void;
-  value: string;
-  label: string;
+  value?: string;
+  label?: string;
 }
 
 const theme = createTheme({

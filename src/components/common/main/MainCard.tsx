@@ -1,25 +1,33 @@
 import { Box } from '@mui/material';
 import { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import data from '../../../../mocks/flights.json';
-import MainTitle from '../title/Title';
 import { Flight } from '../../../types/types';
 import MainCardContent from './MainCardContent';
 import SubmitBtn from '../ui/btns/SubmitBtn';
+import Title from '../titleContent/TitleContent';
+import FilterSort from '../filters/FilterSort';
 
 const styles = {
   container: { width: '60vw', gridArea: 'main' },
-  paginationContainer: { display: 'flex', justifyContent: 'center', marginTop: '20px' },
-  submitBtnContainer: {
-    display: 'flex',
-    flexDirection: 'column',
-    alignItems: 'center'
-  }
+  submitBtnContainer: { display: 'flex', justifyContent: 'center', marginTop: '10px' },
+  paginationContainer: { display: 'flex', justifyContent: 'center', marginTop: '20px' }
 };
 
 export default function MainCard() {
-  const flightsData = data.result.flights;
+  const flightsData = data.result.flights.map(flightData => flightData.flight);
+  const [filteredFlights, setFilteredFlights] = useState<Flight[]>(flightsData);
+
   const [currentPage, setCurrentPage] = useState(1);
   const visibleItems = 5;
+  const navigate = useNavigate();
+
+  console.log(filteredFlights);
+
+  const handleCardClick = (id: number) => {
+    console.log('Clicked on card with id:', id);
+    navigate(`/main/${id}`);
+  };
 
   const handlePrevPage = () => {
     if (currentPage > 1) {
@@ -28,16 +36,16 @@ export default function MainCard() {
   };
 
   const handleNextPage = () => {
-    if (currentPage < Math.ceil(flightsData.length / visibleItems)) {
+    if (currentPage < Math.ceil(filteredFlights.length / visibleItems)) {
       setCurrentPage(currentPage + 1);
     }
   };
 
   const handleDisableBtnPagination = () => {
-    return currentPage === Math.ceil(flightsData.length / visibleItems);
+    return currentPage === Math.ceil(filteredFlights.length / visibleItems);
   };
 
-  const currentData = flightsData.slice(
+  const currentData = filteredFlights.slice(
     (currentPage - 1) * visibleItems,
     currentPage * visibleItems
   );
@@ -51,29 +59,37 @@ export default function MainCard() {
   }, [currentPage]);
 
   return (
-    <Box sx={styles.container}>
-      {currentData.map((flightData: { flight: Flight }, index: number) => (
-        <Box
-          key={index}
-          sx={{
-            marginBottom: '20px'
-          }}
-        >
-          <MainTitle flight={flightData.flight} />
-          <MainCardContent flight={flightData.flight} />
-          <Box sx={styles.submitBtnContainer}>
-            <SubmitBtn title="Выбрать" width="50vw" />
+    <>
+      <FilterSort
+        label="sort-filter"
+        title="Сортировка"
+        flightsData={flightsData}
+        setFilteredFlights={setFilteredFlights}
+      />
+      <Box sx={styles.container}>
+        {currentData.map((flight: Flight, index: number) => (
+          <Box
+            key={index}
+            sx={{
+              marginBottom: '20px'
+            }}
+          >
+            <Title flight={flight} />
+            <MainCardContent flight={flight} />
+            <Box sx={styles.submitBtnContainer}>
+              <SubmitBtn title="Выбрать" width="50vw" onClick={() => handleCardClick(flight.id)} />
+            </Box>
           </Box>
+        ))}
+        <Box sx={styles.paginationContainer}>
+          <SubmitBtn title="Назад" onClick={handlePrevPage} disabled={currentPage === 1} />
+          <SubmitBtn
+            title="Вперед"
+            onClick={handleNextPage}
+            disabled={handleDisableBtnPagination()}
+          />
         </Box>
-      ))}
-      <Box sx={styles.paginationContainer}>
-        <SubmitBtn title="Назад" onClick={handlePrevPage} disabled={currentPage === 1} />
-        <SubmitBtn
-          title="Вперед"
-          onClick={handleNextPage}
-          disabled={handleDisableBtnPagination()}
-        />
       </Box>
-    </Box>
+    </>
   );
 }

@@ -87,7 +87,7 @@ export default function MainDateTime({ flight }: MainProps) {
           <Typography
             variant="h2"
             sx={{
-              fontSize: '14px',
+              fontSize: '12px',
               marginBottom: '10px'
             }}
           >

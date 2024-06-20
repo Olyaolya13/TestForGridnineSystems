@@ -1,6 +1,6 @@
 import { Box } from '@mui/material';
 import data from '../../../../mocks/flights.json';
-import MainTitle from '../title/Title';
+import MainTitle from '../titleContent/TitleContent';
 import { Flight } from '../../../types/types';
 import MainCardContentId from './MainCardContentId';
 import MainAdditionalServices from './MainAdditionalServices';
