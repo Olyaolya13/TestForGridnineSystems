@@ -16,7 +16,7 @@ const styles = {
 
 export default function MainCard() {
   const flightsData = data.result.flights.map(flightData => flightData.flight);
-  const [filteredFlights, setFilteredFlights] = useState<Flight[]>(flightsData);
+  const [filteredFlights, setFilteredFlights] = useState<Flight[]>([]);
 
   const [currentPage, setCurrentPage] = useState(1);
   const visibleItems = 5;

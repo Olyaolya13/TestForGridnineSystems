@@ -38,8 +38,12 @@ const FilterSort: React.FC<FilterSortProps> = ({
             .sort((a, b) => Number(b.price.total.amount) - Number(a.price.total.amount));
         case 'time':
           return flights
-            .filter(flight => flight.legs.length > 0 && flight.legs[0].duration)
-            .sort((a, b) => a.legs[0].duration - b.legs[0].duration);
+            .filter(flight => flight.legs && flight.legs.length > 0)
+            .sort((a, b) => {
+              const totalDurationA = a.legs.reduce((total, leg) => total + leg.duration, 0);
+              const totalDurationB = b.legs.reduce((total, leg) => total + leg.duration, 0);
+              return totalDurationA - totalDurationB;
+            });
         default:
           return flights;
       }
@@ -47,7 +51,7 @@ const FilterSort: React.FC<FilterSortProps> = ({
 
     const sortedFlights = sortFlights(flightsData, selectedSort);
     setFilteredFlights(sortedFlights);
-  }, [selectedSort, flightsData, setFilteredFlights]);
+  }, [selectedSort, setFilteredFlights]);
 
   return (
     <FormControl component="fieldset">
