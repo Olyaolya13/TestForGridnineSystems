@@ -9,6 +9,7 @@ export type Price = {
     amount: string;
     currency: string;
   };
+  value: string;
 };
 
 export type Segment = {

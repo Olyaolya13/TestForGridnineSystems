@@ -7,8 +7,9 @@ import MainCardContent from './MainCardContent';
 import SubmitBtn from '../ui/btns/SubmitBtn';
 import Title from '../titleContent/TitleContent';
 import FilterSort from '../filters/FilterSort';
-import FiltersTransfer from '../filters/FiltersTransfer';
-import FiltersCompany from '../filters/FiltersCompany';
+import FilterTransfer from '../filters/FilterTransfer';
+import FilterCompany from '../filters/FilterCompany';
+import FilterPrice from '../filters/FilterPrice';
 
 const styles = {
   container: { width: '60vw', gridArea: 'main' },
@@ -69,13 +70,19 @@ export default function MainCard() {
           flightsData={flightsData}
           setFilteredFlights={setFilteredFlights}
         />
-        <FiltersTransfer
+        <FilterTransfer
           label="check-transfer"
           title="Фильтрация"
           flightsData={flightsData}
           setFilteredFlights={setFilteredFlights}
         />
-        <FiltersCompany
+        <FilterPrice
+          label="check-price"
+          title="Цена"
+          flightsData={flightsData}
+          setFilteredFlights={setFilteredFlights}
+        />
+        <FilterCompany
           label="check-company"
           title="Авиакомпания"
           flightsData={flightsData}
