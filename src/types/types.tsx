@@ -35,6 +35,7 @@ export type ServicesStatuses = {
   refund: {
     caption: string;
   };
+  length: string;
 };
 
 export type Leg = {
@@ -66,4 +67,11 @@ export interface titleSecondaryProps {
   color?: string;
   title?: string;
   margin?: string;
+}
+
+export interface FilterProps {
+  label: string;
+  title: string;
+  flightsData: Flight[];
+  setFilteredFlights: (flights: Flight[]) => void;
 }
