@@ -7,6 +7,7 @@ import MainCardContent from './MainCardContent';
 import SubmitBtn from '../ui/btns/SubmitBtn';
 import Title from '../titleContent/TitleContent';
 import FilterSort from '../filters/FilterSort';
+import FilterCheck from '../filters/FiltersCheck';
 
 const styles = {
   container: { width: '60vw', gridArea: 'main' },
@@ -22,7 +23,7 @@ export default function MainCard() {
   const visibleItems = 5;
   const navigate = useNavigate();
 
-  console.log(filteredFlights);
+  console.log(flightsData);
 
   const handleCardClick = (id: number) => {
     console.log('Clicked on card with id:', id);
@@ -60,12 +61,20 @@ export default function MainCard() {
 
   return (
     <>
-      <FilterSort
-        label="sort-filter"
-        title="Сортировка"
-        flightsData={flightsData}
-        setFilteredFlights={setFilteredFlights}
-      />
+      <Box>
+        <FilterSort
+          label="sort-filter"
+          title="Сортировка"
+          flightsData={flightsData}
+          setFilteredFlights={setFilteredFlights}
+        />
+        <FilterCheck
+          label="check-filter"
+          title="Фильтрация"
+          flightsData={flightsData}
+          setFilteredFlights={setFilteredFlights}
+        />
+      </Box>
       <Box sx={styles.container}>
         {currentData.map((flight: Flight, index: number) => (
           <Box

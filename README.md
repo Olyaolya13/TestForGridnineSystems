@@ -1,4 +1,4 @@
-# Frontend for Dagaz Company
+# Test for Gridnine Systems
 
 ### О проекте
 

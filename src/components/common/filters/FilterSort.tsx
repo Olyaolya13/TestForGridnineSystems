@@ -1,22 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import { FormControl, RadioGroup, FormControlLabel } from '@mui/material';
-import { Flight } from '../../../types/types';
-import RadioBtn from '../filterBtns/RadioBtn';
+import { FilterProps, Flight } from '../../../types/types';
+import RadioBtn from '../ui/check/RadioBtn';
 import TitleSecondary from '../titleSecondary/TitleSecondary';
 
-interface FilterSortProps {
-  label: string;
-  title: string;
-  flightsData: Flight[];
-  setFilteredFlights: (flights: Flight[]) => void;
-}
-
-const FilterSort: React.FC<FilterSortProps> = ({
-  label,
-  title,
-  flightsData,
-  setFilteredFlights
-}) => {
+export default function FilterSort({ label, title, flightsData, setFilteredFlights }: FilterProps) {
   const [selectedSort, setSelectedSort] = useState<'low-price' | 'high-price' | 'time'>(
     'low-price'
   );
@@ -63,6 +51,4 @@ const FilterSort: React.FC<FilterSortProps> = ({
       </RadioGroup>
     </FormControl>
   );
-};
-
-export default FilterSort;
+}
