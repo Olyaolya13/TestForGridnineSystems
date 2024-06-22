@@ -1,6 +1,5 @@
 import { Box } from '@mui/material';
 import { useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
 import data from '../../../../mocks/flights.json';
 import { Flight } from '../../../types/types';
 import MainCardContent from './MainCardContent';
@@ -10,6 +9,7 @@ import FilterSort from '../filters/FilterSort';
 import FilterTransfer from '../filters/FilterTransfer';
 import FilterCompany from '../filters/FilterCompany';
 import FilterPrice from '../filters/FilterPrice';
+import PopupHandler from '../popup/PopupHandler';
 
 const styles = {
   container: { width: '60vw', gridArea: 'main' },
@@ -23,13 +23,11 @@ export default function MainCard() {
 
   const [currentPage, setCurrentPage] = useState(1);
   const visibleItems = 5;
-  const navigate = useNavigate();
 
   console.log(flightsData);
 
   const handleCardClick = (id: number) => {
     console.log('Clicked on card with id:', id);
-    navigate(`/main/${id}`);
   };
 
   const handlePrevPage = () => {
@@ -100,7 +98,17 @@ export default function MainCard() {
             <Title flight={flight} />
             <MainCardContent flight={flight} />
             <Box sx={styles.submitBtnContainer}>
-              <SubmitBtn title="Выбрать" width="50vw" onClick={() => handleCardClick(flight.id)} />
+              <PopupHandler
+                trigger={
+                  <SubmitBtn
+                    title="Выбрать"
+                    width="50vw"
+                    onClick={() => handleCardClick(flight.id)}
+                  />
+                }
+                flight={flight}
+                flightId={flight.id}
+              />
             </Box>
           </Box>
         ))}

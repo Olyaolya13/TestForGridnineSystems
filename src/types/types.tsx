@@ -40,6 +40,7 @@ export type ServicesStatuses = {
 };
 
 export type Leg = {
+  id: string;
   duration: number;
   segments: Segment[];
 };
@@ -75,4 +76,24 @@ export interface FilterProps {
   title: string;
   flightsData: Flight[];
   setFilteredFlights: (flights: Flight[]) => void;
+}
+
+export type PopupProps = {
+  open: boolean;
+  onClose: () => void;
+  onClickCloseIcon?: () => void;
+  children?: React.ReactNode;
+};
+
+export type PopupHandlerProps = {
+  flight: Flight;
+  flightId: string;
+  trigger: React.ReactNode;
+};
+
+export interface PopupCardIdProps {
+  open: boolean;
+  onClose: () => void;
+  flight: Flight;
+  flightId: string;
 }
