@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { FormControl, FormControlLabel, FormGroup } from '@mui/material';
-import { Flight, FilterProps } from '../../../types/types';
+import { FormControl, FormControlLabel, FormGroup, Typography } from '@mui/material';
+import { Flight, FiltersProps } from '../../../types/types';
 import TitleSecondary from '../titleSecondary/TitleSecondary';
 import CheckboxBtn from '../ui/check/CheckboxBtn';
 import { allComponies } from '../../../utils/constants';
@@ -9,7 +9,11 @@ interface SelectedCompanyState {
   [key: string]: boolean;
 }
 
-export default function FilterCompany({ flightsData, setFilteredFlights, title }: FilterProps) {
+export default function FilterCompany({
+  flightsData,
+  setFilterCompanyCriteria,
+  title
+}: FiltersProps) {
   const [selectedCompany, setSelectedCompany] = useState<SelectedCompanyState>({
     AF: false,
     KLM: false,
@@ -47,15 +51,19 @@ export default function FilterCompany({ flightsData, setFilteredFlights, title }
     };
 
     const filteredFlights = filterFlights(flightsData);
-    setFilteredFlights(filteredFlights);
-  }, [selectedCompany, setFilteredFlights]);
+
+    if (setFilterCompanyCriteria) {
+      setFilterCompanyCriteria(filteredFlights);
+    }
+  }, [selectedCompany, setFilterCompanyCriteria]);
 
   return (
     <FormControl component="fieldset">
-      <TitleSecondary title={title} color="#111" />
+      <TitleSecondary title={title} color="#00a7cc" margin="10px 0" fontSize="14px" />
       <FormGroup>
         {allComponies.map(option => (
           <FormControlLabel
+            sx={{ width: '85%' }}
             key={option.id}
             control={
               <CheckboxBtn
@@ -64,7 +72,7 @@ export default function FilterCompany({ flightsData, setFilteredFlights, title }
                 name={option.id}
               />
             }
-            label={option.label}
+            label={<Typography variant="h4">{option.label}</Typography>}
           />
         ))}
       </FormGroup>

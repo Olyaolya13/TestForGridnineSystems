@@ -17,7 +17,8 @@ const theme = createTheme({
 const styles = {
   radio: {
     color: '#111',
-    padding: '0 7px 0  0'
+    margin: 0,
+    padding: 0
   }
 };
 

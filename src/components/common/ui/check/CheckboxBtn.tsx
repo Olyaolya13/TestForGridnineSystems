@@ -19,7 +19,8 @@ const theme = createTheme({
 
 const styles = {
   checkbox: {
-    padding: '0 7px 0  0'
+    padding: '0 7px 0  0',
+    margin: '7px'
   }
 };
 

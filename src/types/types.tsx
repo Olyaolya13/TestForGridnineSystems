@@ -69,13 +69,18 @@ export interface titleSecondaryProps {
   color?: string;
   title?: string;
   margin?: string;
+  fontSize?: string;
 }
 
-export interface FilterProps {
-  label: string;
+export interface FiltersProps {
+  label?: string;
   title: string;
   flightsData: Flight[];
-  setFilteredFlights: (flights: Flight[]) => void;
+  setSortCriteria?: (flights: Flight[]) => void;
+  setFilterTransferCriteria?: (flights: Flight[]) => void;
+  setFilterPriceCriteria?: (flights: Flight[]) => void;
+  setFilterCompanyCriteria?: (flights: Flight[]) => void;
+  setFilteredTimeFlights?: (flights: Flight[]) => void;
 }
 
 export type PopupProps = {

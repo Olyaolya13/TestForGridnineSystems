@@ -1,10 +1,15 @@
 import React, { useState, useEffect } from 'react';
-import { FormControl, FormControlLabel, FormGroup } from '@mui/material';
-import { Flight, FilterProps } from '../../../types/types';
+import { FormControl, FormControlLabel, FormGroup, Typography } from '@mui/material';
+import { Flight, FiltersProps } from '../../../types/types';
 import TitleSecondary from '../titleSecondary/TitleSecondary';
 import CheckboxBtn from '../ui/check/CheckboxBtn';
+import { transferFiltersData } from '../../../utils/constants';
 
-export default function FilterCheck({ title, flightsData, setFilteredFlights }: FilterProps) {
+export default function FilterTransfer({
+  title,
+  flightsData,
+  setFilterTransferCriteria
+}: FiltersProps) {
   const [selectedChecks, setSelectedChecks] = useState({
     oneStop: false,
     twoAndMoreStops: false,
@@ -42,48 +47,31 @@ export default function FilterCheck({ title, flightsData, setFilteredFlights }: 
           );
         });
       }
-
       return filteredFlights;
     };
 
     const filteredFlights = filterFlights(flightsData);
-    setFilteredFlights(filteredFlights);
-  }, [selectedChecks, setFilteredFlights]);
+    setFilterTransferCriteria && setFilterTransferCriteria(filteredFlights);
+  }, [selectedChecks, setFilterTransferCriteria]);
 
   return (
     <FormControl component="fieldset">
-      <TitleSecondary title={title} color="#111" />
+      <TitleSecondary title={title} color="#00a7cc" margin="10px 0" fontSize="14px" />
       <FormGroup>
-        <FormControlLabel
-          control={
-            <CheckboxBtn
-              checked={selectedChecks.oneStop}
-              onChange={handleCheckChange}
-              name="oneStop"
-            />
-          }
-          label="1 пересадка"
-        />
-        <FormControlLabel
-          control={
-            <CheckboxBtn
-              checked={selectedChecks.twoAndMoreStops}
-              onChange={handleCheckChange}
-              name="twoAndMoreStops"
-            />
-          }
-          label="2 и более пересадки"
-        />
-        <FormControlLabel
-          control={
-            <CheckboxBtn
-              checked={selectedChecks.directFlight}
-              onChange={handleCheckChange}
-              name="directFlight"
-            />
-          }
-          label="прямой рейс"
-        />
+        {transferFiltersData.map(option => (
+          <FormControlLabel
+            key={option.name}
+            sx={option.sx}
+            control={
+              <CheckboxBtn
+                checked={selectedChecks[option.name as keyof typeof selectedChecks]}
+                onChange={handleCheckChange}
+                name={option.name}
+              />
+            }
+            label={<Typography variant="h4">{option.label}</Typography>}
+          />
+        ))}
       </FormGroup>
     </FormControl>
   );

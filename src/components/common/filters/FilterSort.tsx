@@ -1,10 +1,11 @@
 import React, { useState, useEffect } from 'react';
-import { FormControl, RadioGroup, FormControlLabel } from '@mui/material';
-import { FilterProps, Flight } from '../../../types/types';
+import { FormControl, RadioGroup, FormControlLabel, Typography } from '@mui/material';
+import { FiltersProps, Flight } from '../../../types/types';
 import RadioBtn from '../ui/check/RadioBtn';
 import TitleSecondary from '../titleSecondary/TitleSecondary';
+import { sortFiltersData } from '../../../utils/constants';
 
-export default function FilterSort({ label, title, flightsData, setFilteredFlights }: FilterProps) {
+export default function FilterSort({ label, title, flightsData, setSortCriteria }: FiltersProps) {
   const [selectedSort, setSelectedSort] = useState<'all' | 'lowPrice' | 'highPrice' | 'time'>(
     'all'
   );
@@ -51,17 +52,22 @@ export default function FilterSort({ label, title, flightsData, setFilteredFligh
     };
 
     const sortedFlights = sortFlights(flightsData, selectedSort);
-    setFilteredFlights(sortedFlights);
-  }, [selectedSort, setFilteredFlights]);
+    setSortCriteria && setSortCriteria(sortedFlights);
+  }, [selectedSort, setSortCriteria]);
 
   return (
     <FormControl component="fieldset">
-      <TitleSecondary title={title} color="#111" />
+      <TitleSecondary title={title} color="#00a7cc" margin="10px 0" fontSize="14px" />
       <RadioGroup aria-label={label} name={label} value={selectedSort} onChange={handleSortChange}>
-        <FormControlLabel value="all" control={<RadioBtn />} label="все" />
-        <FormControlLabel value="lowPrice" control={<RadioBtn />} label="по возрастанию цены" />
-        <FormControlLabel value="highPrice" control={<RadioBtn />} label="по убыванию цены" />
-        <FormControlLabel value="time" control={<RadioBtn />} label="по времени в пути" />
+        {sortFiltersData.map(option => (
+          <FormControlLabel
+            key={option.value}
+            value={option.value}
+            control={<RadioBtn />}
+            label={<Typography variant="h4">{option.label}</Typography>}
+            sx={option.sx}
+          />
+        ))}
       </RadioGroup>
     </FormControl>
   );

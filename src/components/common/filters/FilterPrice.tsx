@@ -1,9 +1,9 @@
 import { useState } from 'react';
 import { FormControl, FormGroup, TextField } from '@mui/material';
-import { FilterProps } from '../../../types/types';
+import { FiltersProps } from '../../../types/types';
 import TitleSecondary from '../titleSecondary/TitleSecondary';
 
-export default function FilterPrice({ title, flightsData, setFilteredFlights }: FilterProps) {
+export default function FilterPrice({ title, flightsData, setFilterPriceCriteria }: FiltersProps) {
   const [minPrice, setMinPrice] = useState('');
   const [maxPrice, setMaxPrice] = useState('');
 
@@ -34,13 +34,15 @@ export default function FilterPrice({ title, flightsData, setFilteredFlights }: 
       filtered = filtered.filter(flight => parseInt(flight.price.total.amount) <= maxPriceNum);
     }
 
-    setFilteredFlights(filtered);
+    if (setFilterPriceCriteria) {
+      setFilterPriceCriteria(filtered);
+    }
   };
 
   return (
     <FormControl component="fieldset">
-      <TitleSecondary title={title} color="#111" />
-      <FormGroup>
+      <TitleSecondary title={title} color="#00a7cc" margin="10px 0" fontSize="14px" />
+      <FormGroup sx={{ width: '70%' }}>
         <TextField
           id="minPrice"
           name="minPrice"
@@ -49,7 +51,12 @@ export default function FilterPrice({ title, flightsData, setFilteredFlights }: 
           type="text"
           value={minPrice}
           onChange={handleMinPriceChange}
-          inputProps={{ inputMode: 'numeric', pattern: '[0-9]*', min: 0, max: 1000000 }}
+          inputProps={{
+            inputMode: 'numeric',
+            pattern: '[0-9]*',
+            min: 0,
+            max: 1000000
+          }}
         />
         <TextField
           id="maxPrice"
@@ -59,7 +66,12 @@ export default function FilterPrice({ title, flightsData, setFilteredFlights }: 
           type="text"
           value={maxPrice}
           onChange={handleMaxPriceChange}
-          inputProps={{ inputMode: 'numeric', pattern: '[0-9]*', min: 0, max: 1000000 }}
+          inputProps={{
+            inputMode: 'numeric',
+            pattern: '[0-9]*',
+            min: 0,
+            max: 1000000
+          }}
         />
       </FormGroup>
     </FormControl>

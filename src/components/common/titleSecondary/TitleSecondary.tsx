@@ -10,11 +10,16 @@ const styles = {
   }
 };
 
-export default function TitleSecondary({ title, margin, color }: titleSecondaryProps) {
+export default function TitleSecondary({ title, margin, color, fontSize }: titleSecondaryProps) {
   return (
     <Typography
       component="h3"
-      sx={{ ...styles.title, margin: margin ? margin : '0', color: color || styles.title.color }}
+      sx={{
+        ...styles.title,
+        margin: margin ? margin : '0',
+        color: color || styles.title.color,
+        fontSize: fontSize || styles.title.fontSize
+      }}
     >
       {title}
     </Typography>
