@@ -5,7 +5,7 @@ import { PopupCardIdProps } from '../../../types/types';
 export default function PopupCardId({ open, onClose, flight, flightId }: PopupCardIdProps) {
   return (
     <Popup open={open} onClose={onClose} onClickCloseIcon={onClose}>
-      <MainCardIdContent flight={flight} id={flightId} />
+      <MainCardIdContent flight={flight} flightId={flightId} />
     </Popup>
   );
 }

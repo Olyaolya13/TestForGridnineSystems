@@ -14,33 +14,27 @@ const styles = {
 };
 
 export default function MainCard() {
-  const [currentData, setCurrentData] = useState<Flight[]>([]);
   const [finalFlights, setFinalFlights] = useState<Flight[]>([]);
+  const [currentData, setCurrentData] = useState<Flight[]>([]);
   const [currentPage, setCurrentPage] = useState(1);
-  const visiblePage = 2;
+  const visibleItems = 2;
 
   useEffect(() => {
-    setCurrentData(finalFlights.slice(0, visiblePage));
-  }, [finalFlights]);
+    const startIndex = (currentPage - 1) * visibleItems;
+    const endIndex = startIndex + visibleItems;
+    setCurrentData(finalFlights.slice(startIndex, endIndex));
+  }, [finalFlights, currentPage]);
 
   const handleNextPage = () => {
-    const nextPage = currentPage + 1;
-    const startIndex = (nextPage - 1) * visiblePage;
-    const endIndex = startIndex + visiblePage;
-    setCurrentData(finalFlights.slice(startIndex, endIndex));
-    setCurrentPage(nextPage);
+    setCurrentPage(prevPage => prevPage + 1);
   };
 
   const handlePrevPage = () => {
-    const prevPage = currentPage - 1;
-    const startIndex = (prevPage - 1) * visiblePage;
-    const endIndex = startIndex + visiblePage;
-    setCurrentData(finalFlights.slice(startIndex, endIndex));
-    setCurrentPage(prevPage);
+    setCurrentPage(prevPage => prevPage - 1);
   };
 
   const handleDisableBtnPagination = () => {
-    return currentPage * visiblePage >= finalFlights.length;
+    return currentPage === Math.ceil(finalFlights.length / visibleItems);
   };
 
   return (

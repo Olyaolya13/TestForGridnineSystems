@@ -13,7 +13,6 @@ const styles = {
     left: '50%',
     display: 'flex',
     flexDirection: 'column',
-    alignItems: 'center',
     transform: 'translate(-50%, -50%)',
     backgroundColor: 'rgba(255, 255, 255, 0.6)',
     backdropFilter: 'blur(27px)',

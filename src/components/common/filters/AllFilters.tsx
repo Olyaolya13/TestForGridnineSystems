@@ -15,8 +15,11 @@ interface AllFiltersProps {
 export default function AllFilters({ setFinalFlights }: AllFiltersProps) {
   const flightsData: Flight[] = data.result.flights.map((flightData: Flight) => flightData.flight);
 
+  console.log(flightsData);
+
   const [sortedFlights, setSortedFlights] = useState<Flight[]>(flightsData);
   const [filteredTransferFlights, setFilteredTransferFlights] = useState<Flight[]>(flightsData);
+
   const [filteredByPriceFlights, setFilteredByPriceFlights] = useState<Flight[]>(flightsData);
   const [filteredByCompanyFlights, setFilteredByCompanyFlights] = useState<Flight[]>(flightsData);
   const [filteredByDurationFlights, setFilteredByDurationFlights] = useState<Flight[]>(flightsData);
@@ -25,7 +28,7 @@ export default function AllFilters({ setFinalFlights }: AllFiltersProps) {
     const applyFilterAndSort = () => {
       let updatedFlights: Flight[] = flightsData;
 
-      if (filteredTransferFlights.length > 0) {
+      if (filteredTransferFlights.length > 3) {
         updatedFlights = updatedFlights.filter((flight: Flight) =>
           filteredTransferFlights.includes(flight)
         );
@@ -58,7 +61,6 @@ export default function AllFilters({ setFinalFlights }: AllFiltersProps) {
 
     applyFilterAndSort();
   }, [
-    flightsData,
     filteredTransferFlights,
     filteredByPriceFlights,
     filteredByCompanyFlights,

@@ -25,13 +25,16 @@ export default function FilterTransfer({
   };
 
   useEffect(() => {
+    console.log('selectedChecks:', selectedChecks);
+    console.log('flightsData:', flightsData);
+
     const filterFlights = (flights: Flight[]): Flight[] => {
       let filteredFlights = flights;
 
       if (selectedChecks.oneStop || selectedChecks.twoAndMoreStops || selectedChecks.directFlight) {
         filteredFlights = filteredFlights.filter(flight => {
-          const hasOneStop = flight.legs.every(leg => leg.segments.length === 2);
-          const hasTwoAndMoreStops = flight.legs.every(leg => leg.segments.length >= 3);
+          const hasOneStop = flight.legs.some(leg => leg.segments.length === 2);
+          const hasTwoAndMoreStops = flight.legs.some(leg => leg.segments.length >= 3);
           const hasDirectFlight = flight.legs.every(leg => leg.segments.length === 1);
 
           if (selectedChecks.oneStop && selectedChecks.directFlight) {
@@ -40,6 +43,7 @@ export default function FilterTransfer({
               flight.legs.some(leg => leg.segments.length === 2)
             );
           }
+
           return (
             (selectedChecks.oneStop && hasOneStop) ||
             (selectedChecks.twoAndMoreStops && hasTwoAndMoreStops) ||
@@ -47,10 +51,12 @@ export default function FilterTransfer({
           );
         });
       }
+
       return filteredFlights;
     };
 
     const filteredFlights = filterFlights(flightsData);
+    console.log('filteredFlights:', filteredFlights);
     setFilterTransferCriteria && setFilterTransferCriteria(filteredFlights);
   }, [selectedChecks, setFilterTransferCriteria]);
 

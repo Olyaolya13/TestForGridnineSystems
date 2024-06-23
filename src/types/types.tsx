@@ -54,6 +54,7 @@ export interface Flight {
 }
 
 export interface MainProps {
+  flightId?: string;
   flight: Flight;
 }
 
