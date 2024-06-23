@@ -1,10 +1,15 @@
 import React, { useState, useEffect } from 'react';
-import { FormControl, FormControlLabel, FormGroup } from '@mui/material';
-import { Flight, FilterProps } from '../../../types/types';
+import { FormControl, FormControlLabel, FormGroup, Typography } from '@mui/material';
+import { Flight, FiltersProps } from '../../../types/types';
 import TitleSecondary from '../titleSecondary/TitleSecondary';
 import CheckboxBtn from '../ui/check/CheckboxBtn';
+import { transferFiltersData } from '../../../utils/constants';
 
-export default function FilterCheck({ title, flightsData, setFilteredFlights }: FilterProps) {
+export default function FilterTransfer({
+  title,
+  flightsData,
+  setFilterTransferCriteria
+}: FiltersProps) {
   const [selectedChecks, setSelectedChecks] = useState({
     oneStop: false,
     twoAndMoreStops: false,
@@ -20,13 +25,16 @@ export default function FilterCheck({ title, flightsData, setFilteredFlights }: 
   };
 
   useEffect(() => {
+    console.log('selectedChecks:', selectedChecks);
+    console.log('flightsData:', flightsData);
+
     const filterFlights = (flights: Flight[]): Flight[] => {
       let filteredFlights = flights;
 
       if (selectedChecks.oneStop || selectedChecks.twoAndMoreStops || selectedChecks.directFlight) {
         filteredFlights = filteredFlights.filter(flight => {
-          const hasOneStop = flight.legs.every(leg => leg.segments.length === 2);
-          const hasTwoAndMoreStops = flight.legs.every(leg => leg.segments.length >= 3);
+          const hasOneStop = flight.legs.some(leg => leg.segments.length === 2);
+          const hasTwoAndMoreStops = flight.legs.some(leg => leg.segments.length >= 3);
           const hasDirectFlight = flight.legs.every(leg => leg.segments.length === 1);
 
           if (selectedChecks.oneStop && selectedChecks.directFlight) {
@@ -35,6 +43,7 @@ export default function FilterCheck({ title, flightsData, setFilteredFlights }: 
               flight.legs.some(leg => leg.segments.length === 2)
             );
           }
+
           return (
             (selectedChecks.oneStop && hasOneStop) ||
             (selectedChecks.twoAndMoreStops && hasTwoAndMoreStops) ||
@@ -47,43 +56,28 @@ export default function FilterCheck({ title, flightsData, setFilteredFlights }: 
     };
 
     const filteredFlights = filterFlights(flightsData);
-    setFilteredFlights(filteredFlights);
-  }, [selectedChecks, setFilteredFlights]);
+    console.log('filteredFlights:', filteredFlights);
+    setFilterTransferCriteria && setFilterTransferCriteria(filteredFlights);
+  }, [selectedChecks, setFilterTransferCriteria]);
 
   return (
     <FormControl component="fieldset">
-      <TitleSecondary title={title} color="#111" />
+      <TitleSecondary title={title} color="#00a7cc" margin="10px 0" fontSize="14px" />
       <FormGroup>
-        <FormControlLabel
-          control={
-            <CheckboxBtn
-              checked={selectedChecks.oneStop}
-              onChange={handleCheckChange}
-              name="oneStop"
-            />
-          }
-          label="1 пересадка"
-        />
-        <FormControlLabel
-          control={
-            <CheckboxBtn
-              checked={selectedChecks.twoAndMoreStops}
-              onChange={handleCheckChange}
-              name="twoAndMoreStops"
-            />
-          }
-          label="2 и более пересадки"
-        />
-        <FormControlLabel
-          control={
-            <CheckboxBtn
-              checked={selectedChecks.directFlight}
-              onChange={handleCheckChange}
-              name="directFlight"
-            />
-          }
-          label="прямой рейс"
-        />
+        {transferFiltersData.map(option => (
+          <FormControlLabel
+            key={option.name}
+            sx={option.sx}
+            control={
+              <CheckboxBtn
+                checked={selectedChecks[option.name as keyof typeof selectedChecks]}
+                onChange={handleCheckChange}
+                name={option.name}
+              />
+            }
+            label={<Typography variant="h4">{option.label}</Typography>}
+          />
+        ))}
       </FormGroup>
     </FormControl>
   );

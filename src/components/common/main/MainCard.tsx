@@ -1,15 +1,11 @@
 import { Box } from '@mui/material';
 import { useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import data from '../../../../mocks/flights.json';
 import { Flight } from '../../../types/types';
 import MainCardContent from './MainCardContent';
 import SubmitBtn from '../ui/btns/SubmitBtn';
 import Title from '../titleContent/TitleContent';
-import FilterSort from '../filters/FilterSort';
-import FilterTransfer from '../filters/FilterTransfer';
-import FilterCompany from '../filters/FilterCompany';
-import FilterPrice from '../filters/FilterPrice';
+import PopupHandler from '../popup/PopupHandler';
+import AllFilters from '../filters/AllFilters';
 
 const styles = {
   container: { width: '60vw', gridArea: 'main' },
@@ -18,76 +14,33 @@ const styles = {
 };
 
 export default function MainCard() {
-  const flightsData = data.result.flights.map(flightData => flightData.flight);
-  const [filteredFlights, setFilteredFlights] = useState<Flight[]>([]);
-
+  const [finalFlights, setFinalFlights] = useState<Flight[]>([]);
+  const [currentData, setCurrentData] = useState<Flight[]>([]);
   const [currentPage, setCurrentPage] = useState(1);
-  const visibleItems = 5;
-  const navigate = useNavigate();
+  const visibleItems = 2;
 
-  console.log(flightsData);
+  useEffect(() => {
+    const startIndex = (currentPage - 1) * visibleItems;
+    const endIndex = startIndex + visibleItems;
+    setCurrentData(finalFlights.slice(startIndex, endIndex));
+  }, [finalFlights, currentPage]);
 
-  const handleCardClick = (id: number) => {
-    console.log('Clicked on card with id:', id);
-    navigate(`/main/${id}`);
+  const handleNextPage = () => {
+    setCurrentPage(prevPage => prevPage + 1);
   };
 
   const handlePrevPage = () => {
-    if (currentPage > 1) {
-      setCurrentPage(currentPage - 1);
-    }
-  };
-
-  const handleNextPage = () => {
-    if (currentPage < Math.ceil(filteredFlights.length / visibleItems)) {
-      setCurrentPage(currentPage + 1);
-    }
+    setCurrentPage(prevPage => prevPage - 1);
   };
 
   const handleDisableBtnPagination = () => {
-    return currentPage === Math.ceil(filteredFlights.length / visibleItems);
+    return currentPage === Math.ceil(finalFlights.length / visibleItems);
   };
-
-  const currentData = filteredFlights.slice(
-    (currentPage - 1) * visibleItems,
-    currentPage * visibleItems
-  );
-
-  useEffect(() => {
-    window.scrollTo({
-      top: 0,
-      left: 0,
-      behavior: 'smooth'
-    });
-  }, [currentPage]);
 
   return (
     <>
       <Box sx={{ display: 'flex', flexDirection: 'column' }}>
-        <FilterSort
-          label="sort-filter"
-          title="Сортировка"
-          flightsData={flightsData}
-          setFilteredFlights={setFilteredFlights}
-        />
-        <FilterTransfer
-          label="check-transfer"
-          title="Фильтрация"
-          flightsData={flightsData}
-          setFilteredFlights={setFilteredFlights}
-        />
-        <FilterPrice
-          label="check-price"
-          title="Цена"
-          flightsData={flightsData}
-          setFilteredFlights={setFilteredFlights}
-        />
-        <FilterCompany
-          label="check-company"
-          title="Авиакомпания"
-          flightsData={flightsData}
-          setFilteredFlights={setFilteredFlights}
-        />
+        <AllFilters setFinalFlights={setFinalFlights} />
       </Box>
       <Box sx={styles.container}>
         {currentData.map((flight: Flight, index: number) => (
@@ -100,7 +53,11 @@ export default function MainCard() {
             <Title flight={flight} />
             <MainCardContent flight={flight} />
             <Box sx={styles.submitBtnContainer}>
-              <SubmitBtn title="Выбрать" width="50vw" onClick={() => handleCardClick(flight.id)} />
+              <PopupHandler
+                trigger={<SubmitBtn title="Выбрать" width="50vw" />}
+                flight={flight}
+                flightId={flight.id}
+              />
             </Box>
           </Box>
         ))}

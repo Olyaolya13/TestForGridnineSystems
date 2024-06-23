@@ -10,3 +10,16 @@ export const allComponies = [
   { id: 'Brussels', label: 'Brussels Airlines' },
   { id: 'LOT', label: 'LOT Polish Airlines' }
 ];
+
+export const sortFiltersData = [
+  { value: 'all', label: 'все', sx: { margin: 0, width: '10%' } },
+  { value: 'lowPrice', label: 'по возрастанию цены', sx: { margin: 0, width: '80%' } },
+  { value: 'highPrice', label: 'по убыванию цены', sx: { margin: 0, width: '80%' } },
+  { value: 'time', label: 'по времени в пути', sx: { margin: 0, width: '80%' } }
+];
+
+export const transferFiltersData = [
+  { name: 'oneStop', label: '1 пересадка', sx: { margin: 0, width: '50%' } },
+  { name: 'twoAndMoreStops', label: '2 и более пересадки', sx: { margin: 0, width: '80%' } },
+  { name: 'directFlight', label: 'прямой рейс', sx: { margin: 0, width: '60%' } }
+];
