@@ -17,7 +17,7 @@
 ```javascript
 клонируйте репозиторий: git@github.com:Olyaolya13/TestForGridnineSystems.git
 
-переходите в папку проекта: cd frontend
+переходите в папку проекта: cd TestForGridnineSystems
 
 установите зависимости: npm ci
 
